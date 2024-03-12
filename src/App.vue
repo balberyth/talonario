@@ -364,7 +364,7 @@ const imprimir = () => {
   });
 
   const totalBoletas = filteredBoletas.length; // Update this line
-  doc.text(Total de boletas compradas: ${totalBoletas}, 10, doc.autoTable.previous.finalY + 10);
+  doc.text("Total de boletas compradas: ${totalBoletas}, 10, doc.autoTable.previous.finalY + 10");
 
   doc.save("vendidas.pdf");
 };
