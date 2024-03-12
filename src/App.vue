@@ -364,7 +364,7 @@ const imprimir = () => {
   });
 
   const totalBoletas = filteredBoletas.length; // Update this line
-  doc.text(`Total de boletas compradas: ${totalBoletas}`, 10, doc.autoTable.previous.finalY + 10);
+  doc.text(Total de boletas compradas: ${totalBoletas}, 10, doc.autoTable.previous.finalY + 10);
 
   doc.save("vendidas.pdf");
 };
@@ -555,4 +555,665 @@ const imprimir = () => {
                             stroke-width="0.500" xmlns="http://www.w3.org/2000/svg">
                             <path
                                 d="M17.3108 11.25C17.3308 11.51 17.2408 11.78 17.0408 11.98L11.0208 18C9.69083 19.33 8.35083 19.33 7.01083 18L3.00083 13.99C2.32083 13.3 1.98083 12.61 2.00083 11.92H2.07083L17.1908 11.26L17.3108 11.25Z"
-                 
+                                :fill="colorFondo" />
+                            <path opacity="0.4"
+                                d="M17.04 10.6402L9.69 3.29013L8.82 2.42014C8.53 2.13014 8.05 2.13014 7.76 2.42014C7.47 2.71014 7.47 3.19013 7.76 3.48013L8.63 4.35013L3 9.98013C2.36 10.6201 2.02 11.2701 2 11.9201H2.07L17.19 11.2602L17.31 11.2502C17.3 11.0302 17.2 10.8002 17.04 10.6402Z"
+                                fill="#292D32" />
+                            <path
+                                d="M16 22.75H3C2.59 22.75 2.25 22.41 2.25 22C2.25 21.59 2.59 21.25 3 21.25H16C16.41 21.25 16.75 21.59 16.75 22C16.75 22.41 16.41 22.75 16 22.75Z"
+                                :fill="colorFondo" />
+                            <path
+                                d="M19.35 14.7798C19.09 14.4998 18.61 14.4998 18.35 14.7798C18.04 15.1198 16.5 16.8598 16.5 18.1698C16.5 19.4698 17.55 20.5198 18.85 20.5198C20.15 20.5198 21.2 19.4698 21.2 18.1698C21.2 16.8598 19.66 15.1198 19.35 14.7798Z"
+                                :fill="colorFondo" />
+                        </svg>
+                        <div>
+                            <p>Color fondo</p>
+                            <input type="color" v-model="colorFondo" />
+                        </div>
+                    </article>
+                    <article>
+                        <svg width="100px" height="100px" viewBox="0 0 24 24" fill="none" stroke="#000000"
+                            stroke-width="0.500" xmlns="http://www.w3.org/2000/svg">
+                            <path
+                                d="M17.3108 11.25C17.3308 11.51 17.2408 11.78 17.0408 11.98L11.0208 18C9.69083 19.33 8.35083 19.33 7.01083 18L3.00083 13.99C2.32083 13.3 1.98083 12.61 2.00083 11.92H2.07083L17.1908 11.26L17.3108 11.25Z"
+                                :fill="colorBoletasCompradas" />
+                            <path opacity="0.4"
+                                d="M17.04 10.6402L9.69 3.29013L8.82 2.42014C8.53 2.13014 8.05 2.13014 7.76 2.42014C7.47 2.71014 7.47 3.19013 7.76 3.48013L8.63 4.35013L3 9.98013C2.36 10.6201 2.02 11.2701 2 11.9201H2.07L17.19 11.2602L17.31 11.2502C17.3 11.0302 17.2 10.8002 17.04 10.6402Z"
+                                fill="#292D32" />
+                            <path
+                                d="M16 22.75H3C2.59 22.75 2.25 22.41 2.25 22C2.25 21.59 2.59 21.25 3 21.25H16C16.41 21.25 16.75 21.59 16.75 22C16.75 22.41 16.41 22.75 16 22.75Z"
+                                :fill="colorBoletasCompradas" />
+                            <path
+                                d="M19.35 14.7798C19.09 14.4998 18.61 14.4998 18.35 14.7798C18.04 15.1198 16.5 16.8598 16.5 18.1698C16.5 19.4698 17.55 20.5198 18.85 20.5198C20.15 20.5198 21.2 19.4698 21.2 18.1698C21.2 16.8598 19.66 15.1198 19.35 14.7798Z"
+                                :fill="colorBoletasCompradas" />
+                        </svg>
+                        <div>
+                            <p>Color Boletas Compradas</p>
+                            <input type="color" v-model="colorBoletasCompradas" />
+                        </div>
+                    </article>
+                    <article>
+                        <svg width="100px" height="100px" viewBox="0 0 24 24" fill="none" stroke="#000000"
+                            stroke-width="0.500" xmlns="http://www.w3.org/2000/svg">
+                            <path
+                                d="M17.3108 11.25C17.3308 11.51 17.2408 11.78 17.0408 11.98L11.0208 18C9.69083 19.33 8.35083 19.33 7.01083 18L3.00083 13.99C2.32083 13.3 1.98083 12.61 2.00083 11.92H2.07083L17.1908 11.26L17.3108 11.25Z"
+                                :fill="colorBoletasReservadas" />
+                            <path opacity="0.4"
+                                d="M17.04 10.6402L9.69 3.29013L8.82 2.42014C8.53 2.13014 8.05 2.13014 7.76 2.42014C7.47 2.71014 7.47 3.19013 7.76 3.48013L8.63 4.35013L3 9.98013C2.36 10.6201 2.02 11.2701 2 11.9201H2.07L17.19 11.2602L17.31 11.2502C17.3 11.0302 17.2 10.8002 17.04 10.6402Z"
+                                fill="#292D32" />
+                            <path
+                                d="M16 22.75H3C2.59 22.75 2.25 22.41 2.25 22C2.25 21.59 2.59 21.25 3 21.25H16C16.41 21.25 16.75 21.59 16.75 22C16.75 22.41 16.41 22.75 16 22.75Z"
+                                :fill="colorBoletasReservadas" />
+                            <path
+                                d="M19.35 14.7798C19.09 14.4998 18.61 14.4998 18.35 14.7798C18.04 15.1198 16.5 16.8598 16.5 18.1698C16.5 19.4698 17.55 20.5198 18.85 20.5198C20.15 20.5198 21.2 19.4698 21.2 18.1698C21.2 16.8598 19.66 15.1198 19.35 14.7798Z"
+                                :fill="colorBoletasReservadas" />
+                        </svg>
+                        <div>
+                            <p>Color Boletas Reservadas</p>
+                            <input type="color" v-model="colorBoletasReservadas" />
+                        </div>
+                    </article>
+                    <article>
+                        <svg width="100px" height="100px" viewBox="0 0 24 24" fill="none" stroke="#000000"
+                            stroke-width="0.500" xmlns="http://www.w3.org/2000/svg">
+                            <path
+                                d="M17.3108 11.25C17.3308 11.51 17.2408 11.78 17.0408 11.98L11.0208 18C9.69083 19.33 8.35083 19.33 7.01083 18L3.00083 13.99C2.32083 13.3 1.98083 12.61 2.00083 11.92H2.07083L17.1908 11.26L17.3108 11.25Z"
+                                :fill="colorBoletasDisponibles" />
+                            <path opacity="0.4"
+                                d="M17.04 10.6402L9.69 3.29013L8.82 2.42014C8.53 2.13014 8.05 2.13014 7.76 2.42014C7.47 2.71014 7.47 3.19013 7.76 3.48013L8.63 4.35013L3 9.98013C2.36 10.6201 2.02 11.2701 2 11.9201H2.07L17.19 11.2602L17.31 11.2502C17.3 11.0302 17.2 10.8002 17.04 10.6402Z"
+                                fill="#292D32" />
+                            <path
+                                d="M16 22.75H3C2.59 22.75 2.25 22.41 2.25 22C2.25 21.59 2.59 21.25 3 21.25H16C16.41 21.25 16.75 21.59 16.75 22C16.75 22.41 16.41 22.75 16 22.75Z"
+                                :fill="colorBoletasDisponibles" />
+                            <path
+                                d="M19.35 14.7798C19.09 14.4998 18.61 14.4998 18.35 14.7798C18.04 15.1198 16.5 16.8598 16.5 18.1698C16.5 19.4698 17.55 20.5198 18.85 20.5198C20.15 20.5198 21.2 19.4698 21.2 18.1698C21.2 16.8598 19.66 15.1198 19.35 14.7798Z"
+                                :fill="colorBoletasDisponibles" />
+                        </svg>
+                        <div>
+                            <p>Color Boletas Disponibles</p>
+                            <input type="color" v-model="colorBoletasDisponibles" />
+                        </div>
+                    </article>
+                    <article id="final2">
+                        <svg width="100px" height="100px" viewBox="0 0 24 24" fill="none" stroke="#000000"
+                            stroke-width="0.500" xmlns="http://www.w3.org/2000/svg">
+                            <path
+                                d="M17.3108 11.25C17.3308 11.51 17.2408 11.78 17.0408 11.98L11.0208 18C9.69083 19.33 8.35083 19.33 7.01083 18L3.00083 13.99C2.32083 13.3 1.98083 12.61 2.00083 11.92H2.07083L17.1908 11.26L17.3108 11.25Z"
+                                :fill="colorPagina" />
+                            <path opacity="0.4"
+                                d="M17.04 10.6402L9.69 3.29013L8.82 2.42014C8.53 2.13014 8.05 2.13014 7.76 2.42014C7.47 2.71014 7.47 3.19013 7.76 3.48013L8.63 4.35013L3 9.98013C2.36 10.6201 2.02 11.2701 2 11.9201H2.07L17.19 11.2602L17.31 11.2502C17.3 11.0302 17.2 10.8002 17.04 10.6402Z"
+                                fill="#292D32" />
+                            <path
+                                d="M16 22.75H3C2.59 22.75 2.25 22.41 2.25 22C2.25 21.59 2.59 21.25 3 21.25H16C16.41 21.25 16.75 21.59 16.75 22C16.75 22.41 16.41 22.75 16 22.75Z"
+                                :fill="colorPagina" />
+                            <path
+                                d="M19.35 14.7798C19.09 14.4998 18.61 14.4998 18.35 14.7798C18.04 15.1198 16.5 16.8598 16.5 18.1698C16.5 19.4698 17.55 20.5198 18.85 20.5198C20.15 20.5198 21.2 19.4698 21.2 18.1698C21.2 16.8598 19.66 15.1198 19.35 14.7798Z"
+                                :fill="colorPagina" />
+                        </svg>
+                        <div>
+                            <p>Color De La Pagina</p>
+                            <input type="color" v-model="colorPagina" />
+                        </div>
+                    </article>
+                </section>
+                <button class="cerrarUltimoBtn" @click="BotonCerrar">x</button>
+            </div>
+        </main>
+    </div>
+</template>
+
+<style scoped>
+body {
+    width: 100% !important;
+    background: linear-gradient(to bottom, #fad02e, #64b5f6) !important;
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+}
+
+#header {
+    position: fixed;
+    top: 0;
+    left: 50%;
+    transform: translate(-50%);
+    background-color: #3498db;
+    color: #fff;
+    font-size: 10px;
+    padding: 5px 0 5px 0;
+    width: 100%;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.26);
+}
+
+#footer {
+    position: fixed;
+    bottom: 0;
+    left: 50%;
+    transform: translate(-50%);
+    background-color: #3498db;
+    color: #fff;
+    padding: 5px 0 5px 0;
+    width: 100%;
+}
+
+main {
+    padding: 90px 0 0 0;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+}
+
+#informacion {
+    margin-top: 10rem;
+    color: black;
+    background-color: #3498db;
+    border-radius: 20px;
+    padding: 20px;
+    width: 400px;
+    height: 400px;
+}
+
+#informacion h2 {
+    font-weight: 400;
+    font-size: 20px;
+}
+
+#infoContenido {
+    text-align: start;
+    background-color: beige;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    padding: 40px;
+    border-radius: 5px;
+}
+
+#infoContenido span {
+    color: #333;
+    /* Cambia este color al que desees */
+    padding-left: 3px;
+}
+
+#informacion button {
+    background-color: #2ecc71;
+    /* Verde */
+    font-size: 14px;
+    font-weight: 400;
+    padding: 7px 10px;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+#accion {
+    margin-top: 9rem;
+    color: #000000;
+    background-color: #3498db;
+    border-radius: 20px;
+    padding: 30px;
+    width: 400px;
+    height: 400px;
+}
+
+#accion h2 {
+    font-weight: 400;
+    font-size: 20px;
+}
+
+#accContenido {
+    text-align: center;
+    background-color: beige;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    padding: 50px;
+    border-radius: 5px;
+    font-size: 12px;
+}
+
+#accion button {
+    width: 140px;
+    margin-bottom: 5px;
+    border-radius: 6px;
+    background-color: #2ecc71;
+    /* Verde */
+    color: #fff;
+    border: none;
+    cursor: pointer;
+}
+
+#accion #estadoB {
+    margin-top: 21px;
+    margin-bottom: 10px;
+    background-color: blueviolet;
+    border-radius: 2px;
+}
+
+#fondo {
+    position: absolute;
+    background-color: #95a5a656;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    z-index: -1;
+}
+
+#formularioBD {
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    align-items: center;
+    background-color: aliceblue;
+    border: 1px solid black;
+    color: #000;
+    padding: 0 0 15px 0;
+}
+
+#formularioBD h2 {
+    background-color: blue;
+    color: #fff;
+    padding: 5px 40px;
+    font-size: 15px;
+    position: relative;
+    margin: 0;
+}
+
+#dBD,
+#formularioBD input[type="tel"] {
+    width: 202px;
+    padding: 5px 10px 5px 10px;
+    background-color: white;
+    border: 1px solid gray;
+    color: black;
+    margin-bottom: 20px;
+}
+
+#formularioBD input[type="text"] {
+    width: 202px;
+    padding: 5px 10px 5px 10px;
+    background-color: white;
+    border: 1px solid gray;
+    color: black;
+}
+
+#formularioBD div {
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+    margin-bottom: 15px;
+}
+
+.adquirir {
+    background-color: blue;
+    font-size: 13px;
+    width: 100px;
+    padding: 5px 10px 5px 10px;
+    border-radius: 0;
+}
+
+#formulario {
+    margin-top: 10rem;
+    color: black;
+    background-color: #3498db;
+    border-radius: 20px;
+    padding: 20px;
+    width: 240px;
+    height: 350px;
+    position: absolute;
+    padding-left: 25px;
+}
+
+#formulario h2 {
+    padding: 5px 40px;
+    position: relative;
+    bottom: 12.2px;
+    font-weight: 400;
+    font-size: 20px
+}
+
+#forContenido {
+    text-align: start;
+    background-color: beige;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    padding: 5px;
+    padding-left: 8px;
+    border-radius: 5px;
+}
+
+#forContenido input[type="text"] {
+    width: 202px;
+    padding: 5px 10px 5px 10px;
+    background-color: white;
+    border: 1px solid gray;
+    color: black;
+    margin-bottom: 20px;
+}
+
+#forContenido select {
+    width: 224px;
+    padding: 5px 10px 5px 10px;
+    background-color: white;
+    border: 1px solid gray;
+    color: black;
+    margin-bottom: 20px;
+}
+
+#forContenido input[type="date"] {
+    width: 202px;
+    padding: 5px 10px 5px 10px;
+    background-color: white;
+    border: 1px solid gray;
+    color: black;
+    margin-bottom: 20px;
+}
+
+#forContenido button {
+    background-color: #2ecc71;
+    /* Verde */
+    font-size: 14px;
+    font-weight: 400;
+    padding: 7px 10px;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+#editDate {
+    width: 201px;
+    padding: 5px 10px 5px 10px;
+}
+
+#loteria {
+    width: 67rem;
+    height: 40rem;
+    margin-left: 40px;
+    margin-right: 40px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 10px;
+    overflow-y: auto;
+}
+
+::-webkit-scrollbar {
+    width: 6px;
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: #95a5a6;
+    border-radius: 3px;
+}
+
+::-webkit-scrollbar-track {
+    background-color: #ecf0f1;
+}
+
+#loteria button {
+    border-radius: 50%;
+    width: 1px;
+    height: 1px;
+    padding: 25px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#boletaDesplegableReserva {
+    display: flex;
+    flex-direction: column;
+    background-color: #fff;
+    color: black;
+    width: 18rem;
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translate(-50%);
+    padding-top: 20px;
+}
+
+#boletaDesplegableReserva h3 {
+    margin: 10px 0 5px 0;
+}
+
+#boletaDesplegableReserva p {
+    margin: 5px 0 10px 0;
+}
+
+#boletaDesplegableReserva div {
+    display: flex;
+    flex-direction: column;
+}
+
+#boletaDesplegableReserva div button {
+    background-color: #fff;
+    color: #000;
+    text-align: left;
+}
+
+#datosParticipante {
+    display: flex;
+    flex-direction: column;
+    background-color: #fff;
+    color: black;
+    width: 18rem;
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translate(-50%);
+    padding-top: 20px;
+}
+
+#datosParticipante .cerrarBtnVolver {
+    position: absolute;
+    top: -5px;
+    left: 0;
+    cursor: pointer;
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    color: red;
+}
+
+
+#datosParticipante h3 {
+    margin: 10px 0 5px 0;
+}
+
+#datosParticipante p {
+    margin: 5px 0 10px 0;
+}
+
+#datosParticipante p strong {
+    font-weight: bold;
+}
+
+.cerrarBtn {
+    position: absolute;
+    top: -20px;
+    right: -15px;
+    cursor: pointer;
+    background: none;
+    border: none;
+    font-size: 2rem;
+    color: red;
+    width: 2px;
+}
+
+.cerrar {
+    margin: 0;
+    position: absolute;
+    top: -30.5px;
+    right: -27px;
+    cursor: pointer;
+    background: none;
+    border: none;
+    font-size: 2rem;
+    color: red;
+    z-index: 999;
+    background-color: transparent;
+    /* Agrega !important para asegurar que se aplique */
+}
+
+
+#boletaDesplegableComprada {
+    display: flex;
+    flex-direction: column;
+    background-color: #fff;
+    color: black;
+    width: 18rem;
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translate(-50%);
+    padding-top: 20px;
+}
+
+#boletaDesplegableComprada h3 {
+    margin: 10px 0 5px 0;
+}
+
+#boletaDesplegableComprada p {
+    margin: 5px 0 10px 0;
+}
+
+#boletaDesplegableComprada div {
+    display: flex;
+    flex-direction: column;
+}
+
+#boletaDesplegableComprada div button {
+    background-color: #fff;
+    color: #000;
+    text-align: left;
+}
+
+#boletaDesplegableDisponible {
+    display: flex;
+    flex-direction: column;
+    background-color: #fff;
+    color: black;
+    width: 18rem;
+    position: fixed;
+    bottom: 0;
+    left: 50%;
+    transform: translate(-50%);
+}
+
+#boletaDesplegableDisponible h3 {
+    margin: 10px 0 5px 0;
+}
+
+#boletaDesplegableDisponible p {
+    margin: 5px 0 10px 0;
+}
+
+#boletaDesplegableDisponible div {
+    display: flex;
+    flex-direction: column;
+}
+
+#boletaDesplegableDisponible div button {
+    background-color: #fff;
+    color: #000;
+    text-align: left;
+}
+
+.listado-boletas {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: white;
+    box-shadow: rgba(17, 17, 26, 0.1) 0px 4px 16px, rgba(17, 17, 26, 0.05) 0px 8px 32px;
+    z-index: 999;
+    color: black;
+    min-width: 30rem;
+    max-width: 61rem;
+    height: max-content;
+}
+
+.listado-boletas h2 {
+    margin: 0;
+    width: 98%;
+    height: 60px;
+    background-color: blue;
+    color: white;
+    text-align: left;
+    line-height: 60px;
+    padding-left: 20px;
+}
+
+.listado-boletas p {
+    margin: 0;
+}
+
+.papaCard {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.card {
+    box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px, rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset;
+    margin: 10px;
+    width: 240px;
+    text-align: left;
+    height: max-content;
+}
+
+.textoListar {
+    font-weight: 600;
+}
+
+.lin {
+    width: 100%;
+    background-color: #33333363;
+    height: 3px;
+    margin-bottom: 5px;
+    margin-top: 30px;
+}
+
+.cerrarr {
+    margin-bottom: 5px;
+}
+
+#paletasDeColores {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: white;
+    box-shadow: rgba(17, 17, 26, 0.1) 0px 4px 16px, rgba(17, 17, 26, 0.05) 0px 8px 32px;
+    z-index: 999;
+    color: black;
+    width: 61rem;
+    height: max-content;
+    /* Cambié 'max-content' por '70vh' para que tenga un 70% del alto de la ventana */
+}
+
+#paletasDeColores section {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    padding: 20px;
+    border-bottom: 1px solid #ddd;
+    /* Línea divisoria entre artículos */
+}
+
+#paletasDeColores article {
+    width: calc(25% - 20px);
+    /* Ajusta el ancho de cada artículo según tu diseño */
+}
+
+.cerrarUltimoBtn {
+    position: absolute;
+    top: -38px;
+    right: -38px;
+    cursor: pointer;
+    background: none;
+    border: none;
+    font-size: 2.5rem;
+    color: red;
+}
+</style>
