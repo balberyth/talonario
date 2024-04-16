@@ -16,11 +16,11 @@ let boletas = ref([]);
 let clientes = ref([]);
 
 // Fechas
-let fechaDate = ref(null)
+let fechaDate = ref(null);
 let hoy = new Date();
 hoy.setHours(0, 0, 0, 0);
 
-// Mostrar 
+// Mostrar
 let mostrarFormulario = ref(true);
 let mostrarBoletas = ref(false);
 let mostrarRegistroDatosDeBoleta = ref(false);
@@ -34,7 +34,7 @@ let premio = ref("");
 let precioBoleta = ref("");
 let tipoLoteria = ref("");
 let fechaSorteo = ref("");
-let actualizarB=ref(false)
+let actualizarB = ref(false);
 
 // Estados de Boleta
 let boletaReservada = ref(false);
@@ -57,7 +57,7 @@ let p = ref(null);
 
 // Lógica de Boleta Ganadora
 const mostrarGanador = ref(false);
-const boletaGanadora = ref("")
+const boletaGanadora = ref("");
 const estadoGanaste = ref(false);
 const botonDeshabilitado = ref(false);
 
@@ -73,12 +73,7 @@ function editarparticipantes() {
 function formular() {
     fechaDate = new Date(fechaSorteo.value + "T00:00:00");
 
-    if (
-        premio.value == "" &&
-        precioBoleta.value == "" &&
-        tipoLoteria.value == "" &&
-        fechaSorteo.value == ""
-    ) {
+    if (premio.value == "" && precioBoleta.value == "" && tipoLoteria.value == "" && fechaSorteo.value == "") {
         Swal.fire({
             text: "Los datos están vacíos",
             icon: "error",
@@ -137,12 +132,7 @@ function formular() {
     }
 }
 function adquirir() {
-    if (
-        nombreCliente.value == "" ||
-        telefonoCliente.value == "" ||
-        direccionCliente.value == "" ||
-        pagarCliente.value == ""
-    ) {
+    if (nombreCliente.value == "" || telefonoCliente.value == "" || direccionCliente.value == "" || pagarCliente.value == "") {
         Swal.fire({
             text: "Los datos están vacíos",
             icon: "error",
@@ -165,7 +155,7 @@ function adquirir() {
             boletas: [index],
             indice: index,
         });
-        boletas.value[index].estado = 'Reservado';
+        boletas.value[index].estado = "Reservado";
 
         nombreCliente.value = "";
         telefonoCliente.value = "";
@@ -173,7 +163,6 @@ function adquirir() {
         pagarCliente.value = "";
         mostrarRegistroDatosDeBoleta.value = false;
         boletaDisponible.value = false;
-
     } else if (pagarCliente.value == "si") {
         Swal.fire({
             text: "¡Gracias por comprar la boleta!",
@@ -187,7 +176,7 @@ function adquirir() {
             boletas: [index],
             indice: index,
         });
-        boletas.value[index].estado = 'Comprado';
+        boletas.value[index].estado = "Comprado";
 
         nombreCliente.value = "";
         telefonoCliente.value = "";
@@ -205,12 +194,12 @@ function color(objeto) {
             return { backgroundColor: "red", color: "white" };
         case "Comprado":
             return { backgroundColor: "blue", color: "white" };
-        case 'Ganador':
-            return { backgroundColor: 'green', color: 'white' };
+        case "Ganador":
+            return { backgroundColor: "green", color: "white" };
     }
 }
 const verDatosParticipante = () => {
-    p.value = clientes.value.find(cliente => cliente.boletas.includes(index));
+    p.value = clientes.value.find((cliente) => cliente.boletas.includes(index));
     datosParticipanteVisible.value = true;
     boletaComprada.value = false;
     boletaReservada.value = false;
@@ -224,9 +213,6 @@ const BotonCerrar = () => {
         case mostrarPerzonalicacion.value === true:
             mostrarPerzonalicacion.value = false;
             break;
-        case mostrarRegistroDatosDeBoleta.value === true:
-            mostrarRegistroDatosDeBoleta.value = false;
-            break;
         case boletaComprada.value === true:
             boletaComprada.value = false;
             break;
@@ -236,13 +222,20 @@ const BotonCerrar = () => {
         case boletaDisponible.value === true:
             boletaDisponible.value = false;
             break;
+        case boletaComprada.value === true:
+            boletaComprada.value = false;
+            break;
         case boletaGanada.value === true:
             boletaGanada.value = false;
+            break
         case mostrarGanador.value === true:
             mostrarGanador.value = false;
             break;
         case estadoGanaste.value === true:
             estadoGanaste.value = false;
+            break;
+        case mostrarRegistroDatosDeBoleta.value === true:
+            mostrarRegistroDatosDeBoleta.value = false;
             break;
     }
 };
@@ -251,10 +244,9 @@ function volver() {
     boletaComprada.value = false;
     boletaReservada.value = false;
 
-    if (element.estado === 'Reservado') {
+    if (element.estado === "Reservado") {
         boletaReservada.value = true;
-
-    } else if (element.estado === 'Comprado') {
+    } else if (element.estado === "Comprado") {
         boletaComprada.value = true;
     }
 }
@@ -265,14 +257,10 @@ function liberar() {
         boletaComprada.value = false;
 
         // Encontrar el índice del cliente que tiene esta boleta
-        let clienteIndex = clientes.value.findIndex(
-            (cliente) => cliente.boletas.includes(index)
-        );
+        let clienteIndex = clientes.value.findIndex((cliente) => cliente.boletas.includes(index));
         // Eliminar la boleta de la lista de boletas del cliente
         if (clienteIndex !== -1) {
-            clientes.value[clienteIndex].boletas = clientes.value[clienteIndex].boletas.filter(
-                (boletaIndex) => boletaIndex !== index
-            );
+            clientes.value[clienteIndex].boletas = clientes.value[clienteIndex].boletas.filter((boletaIndex) => boletaIndex !== index);
             // Verificar si el cliente ya no tiene más boletas, luego eliminar al cliente
             if (clientes.value[clienteIndex].boletas.length === 0) {
                 clientes.value.splice(clienteIndex, 1);
@@ -283,7 +271,7 @@ function liberar() {
         p.value = null;
     }
     // Actualizar el estado de la boleta a 'Disponible'
-    boletas.value[index].estado = 'Disponible';
+    boletas.value[index].estado = "Disponible";
 
     Swal.fire({
         text: "¡Boleta liberada exitosamente!",
@@ -292,19 +280,18 @@ function liberar() {
 }
 function marcarPagado() {
     boletaReservada.value = false;
-    boletas.value[index].estado = 'Comprado';
+    boletas.value[index].estado = "Comprado";
 
     // Encuentra al participante al que pertenece la boleta
-    const participanteIndex = clientes.value.findIndex
-        (cliente => cliente.boletas.includes(index));
+    const participanteIndex = clientes.value.findIndex((cliente) => cliente.boletas.includes(index));
     // Actualiza el estado de la boleta en los datos del participante
 
     if (participanteIndex !== -1) {
-        clientes.value[participanteIndex].pagar = 'si'; // Actualiza el estado del participante a "Comprada"
+        clientes.value[participanteIndex].pagar = "si"; // Actualiza el estado del participante a "Comprada"
     }
     Swal.fire({
         text: "¡Boleta marcada como pagada exitosamente!",
-        icon: "success"
+        icon: "success",
     });
 }
 const pdf = () => {
@@ -313,13 +300,7 @@ const pdf = () => {
     doc.text("Resumen de boletas vendidas", 10, 10);
     const filteredBoletas = clientes.value.filter((boleta) => !boleta.deleted);
 
-    const tableData = filteredBoletas.map((boleta, index) => [
-        boleta.indice,
-        boleta.nombre,
-        boleta.telefono,
-        boleta.direccion,
-        boleta.pagar,
-    ]);
+    const tableData = filteredBoletas.map((boleta, index) => [boleta.indice, boleta.nombre, boleta.telefono, boleta.direccion, boleta.pagar]);
 
     doc.autoTable({
         head: [["Boleta", "Nombre", "Teléfono", "Dirección", "Pago"]],
@@ -328,34 +309,31 @@ const pdf = () => {
     });
 
     const totalBoletas = filteredBoletas.length;
-    const totalPrecioBoletas = filteredBoletas.filter(boleta => boleta.pagar === 'si').length * precioBoleta.value;
-    const totalPrecioFaltanteBoletasReservadas = filteredBoletas.filter(boleta => boleta.pagar === 'no').length * precioBoleta.value;
+    const totalPrecioBoletas = filteredBoletas.filter((boleta) => boleta.pagar === "si").length * precioBoleta.value;
+    const totalPrecioFaltanteBoletasReservadas = filteredBoletas.filter((boleta) => boleta.pagar === "no").length * precioBoleta.value;
 
-    doc.text(`Total de boletas compradas: ${totalBoletas}`, 10, doc.autoTable.previous.finalY + 10);
-    doc.text(`Total del precio de las boletas compradas: ${formatearNumero(totalPrecioBoletas)}`, 10, doc.autoTable.previous.finalY + 20);
-    doc.text(`Total del precio faltante de las boletas reservadas: ${formatearNumero(totalPrecioFaltanteBoletasReservadas)}`, 10, doc.autoTable.previous.finalY + 30);
+    doc.text(Total de boletas compradas: ${totalBoletas}, 10, doc.autoTable.previous.finalY + 10);
+    doc.text(Total del precio de las boletas compradas: ${formatearNumero(totalPrecioBoletas)}, 10, doc.autoTable.previous.finalY + 20);
+    doc.text(Total del precio faltante de las boletas reservadas: ${formatearNumero(totalPrecioFaltanteBoletasReservadas)}, 10, doc.autoTable.previous.finalY + 30);
     doc.save("vendidas.pdf");
 };
 
 function editarparticipante() {
-	actualizarB.value = true;
-	mostrarRegistroDatosDeBoleta.value = true;
-	mostrarFondo.value = true;
-	p = clientes.value.find((c) => c.indice == index);
+    console.log('hola');
+    datosParticipanteVisible.value = false;
+    actualizarB.value = true;
+    mostrarFondo.value = true;
+    p = clientes.value.find((c) => c.indice == index);
     console.log(p, index.value);
-	nombreCliente.value = p.nombre;
-	telefonoCliente.value = p.telefono;
-	direccionCliente.value = p.direccion;
-	pagarCliente.value = p.pagar;
+    nombreCliente.value = p.nombre;
+    telefonoCliente.value = p.telefono;
+    direccionCliente.value = p.direccion;
+    pagarCliente.value = p.pagar;
+    mostrarRegistroDatosDeBoleta.value = true;
 }
 
-function actualizarpartipante (){
-    if (
-        nombreCliente.value == "" ||
-        telefonoCliente.value == "" ||
-        direccionCliente.value == "" ||
-        pagarCliente.value == ""
-    ) {
+function actualizarpartipante() {
+    if (nombreCliente.value == "" || telefonoCliente.value == "" || direccionCliente.value == "" || pagarCliente.value == "") {
         Swal.fire({
             text: "Los datos están vacíos",
             icon: "error",
@@ -367,64 +345,60 @@ function actualizarpartipante (){
         });
     } else if (pagarCliente.value == "no") {
         Swal.fire({
-			text: "¡Gracias por reservar una boleta!",
-			icon: "success",
-		});
+            text: "¡Gracias por reservar una boleta!",
+            icon: "success",
+        });
 
-		clientes.value.find((cliente) => {
-			if (cliente.indice === index) {
-				cliente.nombre = nombreCliente.value;
-				cliente.telefono = telefonoCliente.value;
-				cliente.direccion = direccionCliente.value;
-				cliente.pagar = pagarCliente.value;
-			}
-		});
+        clientes.value.find((cliente) => {
+            if (cliente.indice === index) {
+                cliente.nombre = nombreCliente.value;
+                cliente.telefono = telefonoCliente.value;
+                cliente.direccion = direccionCliente.value;
+                cliente.pagar = pagarCliente.value;
+            }
+        });
 
-		boletas.value[index].estado = "Reservado";
-		actualizarB.value = false;
-		mostrarRegistroDatosDeBoleta.value = false;
-		mostrarFondo.value = false;
-		boletaDisponible.value = false;
+        boletas.value[index].estado = "Reservado";
+        actualizarB.value = false;
+        mostrarRegistroDatosDeBoleta.value = false;
+        mostrarFondo.value = false;
+        boletaDisponible.value = false;
 
-		editarBalota(element.value, index);
+        editarBalota(element.value, index);
 
-		nombreCliente = ref("");
-		telefonoCliente = ref("");
-		direccionCliente= ref("");
-		pagarCliente = ref("");
-	
-
+        nombreCliente = ref("");
+        telefonoCliente = ref("");
+        direccionCliente = ref("");
+        pagarCliente = ref("");
     } else if (pagarCliente.value == "si") {
         Swal.fire({
-			text: "¡La boleta ah sido actualizada!",
-			icon: "success",
-		});
+            text: "¡La boleta ah sido actualizada!",
+            icon: "success",
+        });
 
-		clientes.value.find((cliente) => {
-			if (cliente.indice === index) {
-				cliente.nombre = nombreCliente.value;
-				cliente.telefono = telefonoCliente.value;
-				cliente.direccion = direccionCliente.value;
-				cliente.pagar = pagarCliente.value;
-			}
-		});
-		
-		boletas.value[index].estado = "Comprado";
-		actualizarB.value = false;
-		mostrarRegistroDatosDeBoleta.value = false;
-		mostrarFondo.value = false;
-		boletaDisponible.value = false;
+        clientes.value.find((cliente) => {
+            if (cliente.indice === index) {
+                cliente.nombre = nombreCliente.value;
+                cliente.telefono = telefonoCliente.value;
+                cliente.direccion = direccionCliente.value;
+                cliente.pagar = pagarCliente.value;
+            }
+        });
 
-		editarBalota(element.value, index);
+        boletas.value[index].estado = "Comprado";
+        actualizarB.value = false;
+        mostrarRegistroDatosDeBoleta.value = false;
+        mostrarFondo.value = false;
+        boletaDisponible.value = false;
 
-		nombreCliente.value = "";
+        editarBalota(element.value, index);
+
+        nombreCliente.value = "";
         telefonoCliente.value = "";
         direccionCliente.value = "";
         pagarCliente.value = "";
-    
-	}
+    }
 }
-
 
 function mostrarListadoDeBoletas() {
     mostrarListadoBoletas.value = true;
@@ -461,7 +435,7 @@ function editarBalota(elemento, indice) {
             boletaComprada.value = true;
             break;
         case "Ganador":
-            boletaGanada.value = true
+            boletaGanada.value = true;
     }
     element = elemento;
     index = indice;
@@ -471,7 +445,7 @@ const agruparBoletasCompradas = () => {
 
     // Agrupar boletas por nombre, teléfono y dirección
     clientes.value.forEach((cliente) => {
-        const clave = "${cliente.nombre}_${cliente.telefono}_${cliente.direccion}";
+        const clave = "${cliente.nombre}${cliente.telefono}${cliente.direccion}";
         if (!clientesAgrupados[clave]) {
             clientesAgrupados[clave] = { ...cliente, boletas: [cliente.boletas[0]] };
         } else {
@@ -497,11 +471,10 @@ function botonGanador() {
         // Comprueba si el número de boleta actual coincide con boletaGanadora
         if (e.i === boletaGanadoraNumero) {
             // Establece el estado de la boleta como "Ganador"
-            boletas.value[index].estado = 'Ganador';
+            boletas.value[index].estado = "Ganador";
         }
     });
 }
-
 </script>
 
 <template>
@@ -509,7 +482,7 @@ function botonGanador() {
         <button @click="BotonCerrar" class="cerrarBtn">x</button>
         <h3>¿Cuál será la boleta ganadora?</h3>
         La boleta ganadora es:
-        <input type="number" v-model="boletaGanadora">
+        <input type="number" v-model="boletaGanadora" />
         <button class="buttonGanador" @click="botonGanador">Aceptar</button>
     </div>
     <div v-if="estadoGanaste" class="divGanaste">
@@ -547,11 +520,11 @@ function botonGanador() {
             <button @click="volver()" class="cerrarBtnVolver">⮌</button>
             <h3>
                 Boleta
-                <span>{{ p.indice > 10 ? p.indice : '0' + p.indice }}</span>
+                <span>{{ p.indice > 10 ? p.indice : "0" + p.indice }}</span>
             </h3>
             <p>
                 Estado:
-                <span>{{ p.pagar === 'si' ? 'Comprada 🔵' : 'Reservada 🔴' }}</span>
+                <span>{{ p.pagar === "si" ? "Comprada 🔵" : "Reservada 🔴" }}</span>
             </p>
             <div>
                 <p><strong>Nombre:</strong> {{ p.nombre }}</p>
@@ -559,11 +532,7 @@ function botonGanador() {
                 <p><strong>Dirección:</strong> {{ p.direccion }}</p>
             </div>
 
-            <button @click="editarparticipante()">editar datos </button>
-
-            
-
-
+            <button @click="editarparticipante()">editar datos</button>
         </div>
         <!-- Desplegable boleta comprada -->
         <div id="boletaDesplegableComprada" v-if="boletaComprada == true" :style="{ backgroundColor: boletaComprada }">
@@ -608,10 +577,10 @@ function botonGanador() {
                 <h2 style="color: white">INFORMACIÓN</h2>
                 <div id="infoContenido">
                     <p>
-                        🏆<span>{{ mostrarBoletas == true ? formatearNumero(premio) : '' }}</span>
+                        🏆<span>{{ mostrarBoletas == true ? formatearNumero(premio) : "" }}</span>
                     </p>
                     <p>
-                        💰<span>{{ mostrarBoletas == true ? formatearNumero(precioBoleta) : '' }}</span>
+                        💰<span>{{ mostrarBoletas == true ? formatearNumero(precioBoleta) : "" }}</span>
                     </p>
                     <p>
                         🏦<span>{{ mostrarBoletas == true ? tipoLoteria : "" }}</span>
@@ -624,7 +593,8 @@ function botonGanador() {
             </section>
             <section id="loteria">
                 <button v-for="(e, i) in boletas" :key="i" @click="editarBalota(e, i)" :style="color(e.estado)">
-                    {{ e.i < 10 ? "0" + e.i : e.i }} </button>
+                    {{ e.i < 10 ? "0" + e.i : e.i }}
+                </button>
             </section>
             <section id="formulario" v-if="mostrarFormulario == true">
                 <h2 style="color: white">CONFIGURA TU TALONARIO</h2>
@@ -652,10 +622,8 @@ function botonGanador() {
                 <div id="accContenido">
                     <button :disabled="botonDeshabilitado" @click="estadoGanador" id="estadoB">ESTADO GANADOR</button>
                     <button @click="mostrarListadoDeBoletas()">LISTAR BOLETAS</button>
-                    <button @click="mostrarPerzonalizar()">PERSONALIZAR
-                        TALONARIO WEB</button>
-                    <button @click="pdf()">GENERAR ARCHIVO DE
-                        DATOS</button>
+                    <button @click="mostrarPerzonalizar()">PERSONALIZAR TALONARIO WEB</button>
+                    <button @click="pdf()">GENERAR ARCHIVO DE DATOS</button>
                 </div>
             </section>
             <section v-if="mostrarListadoBoletas" class="listado-boletas">
@@ -669,14 +637,14 @@ function botonGanador() {
                         <p>Direccion</p>
                         <p class="textoListar">{{ cliente.direccion }}</p>
                         <p>Boletas</p>
-                        <p>{{ cliente.boletas.join(' - ') }}</p>
+                        <p>{{ cliente.boletas.join(" - ") }}</p>
                     </div>
                 </div>
                 <div class="lin"></div>
                 <button class="cerrarr" @click="cerrarListadoBoletas">Cerrar</button>
             </section>
-            <section id="formularioBD" v-if="mostrarRegistroDatosDeBoleta == true">
-                <button @click="BotonCerrar" class="cerrar">x</button>
+            <section id="formularioBD" v-if="mostrarRegistroDatosDeBoleta">
+                <button @click="BotonCerrar" class="cerrarrrr">x</button>
                 <h2>DILIGENCIA LA INFORMACION</h2>
                 <p>
                     Boleta a Adquirir:
@@ -696,31 +664,20 @@ function botonGanador() {
                         No
                     </label>
                 </div>
-                <button class="adquirir" @click="adquirir()" v-if="actualizarB==false">ADQUIRIR</button>
+                <button class="adquirir" @click="adquirir()" v-if="actualizarB == false">ADQUIRIR</button>
                 <button class="adquirir" @click="actualizarpartipante()" v-else>actualizar</button>
             </section>
 
             <div id="paletasDeColores" v-if="mostrarPerzonalicacion == true">
-                <h2 :style="{ margin: 0 }">
-                    &nbsp;&nbsp;PALETAS DE COLORES<button @click="BotonCerrar">x</button>
-                </h2>
+                <h2 :style="{ margin: 0 }">&nbsp;&nbsp;PALETAS DE COLORES<button @click="BotonCerrar">x</button></h2>
                 <section>
                     <article>
                         <!-- Uploaded to: SVG Repo, www.svgrepo.com, Generator: SVG Repo Mixer Tools -->
-                        <svg width="100px" height="100px" viewBox="0 0 24 24" fill="none" stroke="#000000"
-                            stroke-width="0.500" xmlns="http://www.w3.org/2000/svg">
-                            <path
-                                d="M17.3108 11.25C17.3308 11.51 17.2408 11.78 17.0408 11.98L11.0208 18C9.69083 19.33 8.35083 19.33 7.01083 18L3.00083 13.99C2.32083 13.3 1.98083 12.61 2.00083 11.92H2.07083L17.1908 11.26L17.3108 11.25Z"
-                                :fill="colorFondo" />
-                            <path opacity="0.4"
-                                d="M17.04 10.6402L9.69 3.29013L8.82 2.42014C8.53 2.13014 8.05 2.13014 7.76 2.42014C7.47 2.71014 7.47 3.19013 7.76 3.48013L8.63 4.35013L3 9.98013C2.36 10.6201 2.02 11.2701 2 11.9201H2.07L17.19 11.2602L17.31 11.2502C17.3 11.0302 17.2 10.8002 17.04 10.6402Z"
-                                fill="#292D32" />
-                            <path
-                                d="M16 22.75H3C2.59 22.75 2.25 22.41 2.25 22C2.25 21.59 2.59 21.25 3 21.25H16C16.41 21.25 16.75 21.59 16.75 22C16.75 22.41 16.41 22.75 16 22.75Z"
-                                :fill="colorFondo" />
-                            <path
-                                d="M19.35 14.7798C19.09 14.4998 18.61 14.4998 18.35 14.7798C18.04 15.1198 16.5 16.8598 16.5 18.1698C16.5 19.4698 17.55 20.5198 18.85 20.5198C20.15 20.5198 21.2 19.4698 21.2 18.1698C21.2 16.8598 19.66 15.1198 19.35 14.7798Z"
-                                :fill="colorFondo" />
+                        <svg width="100px" height="100px" viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="0.500" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M17.3108 11.25C17.3308 11.51 17.2408 11.78 17.0408 11.98L11.0208 18C9.69083 19.33 8.35083 19.33 7.01083 18L3.00083 13.99C2.32083 13.3 1.98083 12.61 2.00083 11.92H2.07083L17.1908 11.26L17.3108 11.25Z" :fill="colorFondo" />
+                            <path opacity="0.4" d="M17.04 10.6402L9.69 3.29013L8.82 2.42014C8.53 2.13014 8.05 2.13014 7.76 2.42014C7.47 2.71014 7.47 3.19013 7.76 3.48013L8.63 4.35013L3 9.98013C2.36 10.6201 2.02 11.2701 2 11.9201H2.07L17.19 11.2602L17.31 11.2502C17.3 11.0302 17.2 10.8002 17.04 10.6402Z" fill="#292D32" />
+                            <path d="M16 22.75H3C2.59 22.75 2.25 22.41 2.25 22C2.25 21.59 2.59 21.25 3 21.25H16C16.41 21.25 16.75 21.59 16.75 22C16.75 22.41 16.41 22.75 16 22.75Z" :fill="colorFondo" />
+                            <path d="M19.35 14.7798C19.09 14.4998 18.61 14.4998 18.35 14.7798C18.04 15.1198 16.5 16.8598 16.5 18.1698C16.5 19.4698 17.55 20.5198 18.85 20.5198C20.15 20.5198 21.2 19.4698 21.2 18.1698C21.2 16.8598 19.66 15.1198 19.35 14.7798Z" :fill="colorFondo" />
                         </svg>
                         <div>
                             <p>Color fondo</p>
@@ -728,20 +685,11 @@ function botonGanador() {
                         </div>
                     </article>
                     <article>
-                        <svg width="100px" height="100px" viewBox="0 0 24 24" fill="none" stroke="#000000"
-                            stroke-width="0.500" xmlns="http://www.w3.org/2000/svg">
-                            <path
-                                d="M17.3108 11.25C17.3308 11.51 17.2408 11.78 17.0408 11.98L11.0208 18C9.69083 19.33 8.35083 19.33 7.01083 18L3.00083 13.99C2.32083 13.3 1.98083 12.61 2.00083 11.92H2.07083L17.1908 11.26L17.3108 11.25Z"
-                                :fill="ColorBdisponible" />
-                            <path opacity="0.4"
-                                d="M17.04 10.6402L9.69 3.29013L8.82 2.42014C8.53 2.13014 8.05 2.13014 7.76 2.42014C7.47 2.71014 7.47 3.19013 7.76 3.48013L8.63 4.35013L3 9.98013C2.36 10.6201 2.02 11.2701 2 11.9201H2.07L17.19 11.2602L17.31 11.2502C17.3 11.0302 17.2 10.8002 17.04 10.6402Z"
-                                fill="#292D32" />
-                            <path
-                                d="M16 22.75H3C2.59 22.75 2.25 22.41 2.25 22C2.25 21.59 2.59 21.25 3 21.25H16C16.41 21.25 16.75 21.59 16.75 22C16.75 22.41 16.41 22.75 16 22.75Z"
-                                :fill="ColorBdisponible" />
-                            <path
-                                d="M19.35 14.7798C19.09 14.4998 18.61 14.4998 18.35 14.7798C18.04 15.1198 16.5 16.8598 16.5 18.1698C16.5 19.4698 17.55 20.5198 18.85 20.5198C20.15 20.5198 21.2 19.4698 21.2 18.1698C21.2 16.8598 19.66 15.1198 19.35 14.7798Z"
-                                :fill="ColorBdisponible" />
+                        <svg width="100px" height="100px" viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="0.500" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M17.3108 11.25C17.3308 11.51 17.2408 11.78 17.0408 11.98L11.0208 18C9.69083 19.33 8.35083 19.33 7.01083 18L3.00083 13.99C2.32083 13.3 1.98083 12.61 2.00083 11.92H2.07083L17.1908 11.26L17.3108 11.25Z" :fill="ColorBdisponible" />
+                            <path opacity="0.4" d="M17.04 10.6402L9.69 3.29013L8.82 2.42014C8.53 2.13014 8.05 2.13014 7.76 2.42014C7.47 2.71014 7.47 3.19013 7.76 3.48013L8.63 4.35013L3 9.98013C2.36 10.6201 2.02 11.2701 2 11.9201H2.07L17.19 11.2602L17.31 11.2502C17.3 11.0302 17.2 10.8002 17.04 10.6402Z" fill="#292D32" />
+                            <path d="M16 22.75H3C2.59 22.75 2.25 22.41 2.25 22C2.25 21.59 2.59 21.25 3 21.25H16C16.41 21.25 16.75 21.59 16.75 22C16.75 22.41 16.41 22.75 16 22.75Z" :fill="ColorBdisponible" />
+                            <path d="M19.35 14.7798C19.09 14.4998 18.61 14.4998 18.35 14.7798C18.04 15.1198 16.5 16.8598 16.5 18.1698C16.5 19.4698 17.55 20.5198 18.85 20.5198C20.15 20.5198 21.2 19.4698 21.2 18.1698C21.2 16.8598 19.66 15.1198 19.35 14.7798Z" :fill="ColorBdisponible" />
                         </svg>
                         <div>
                             <p>Color Boletas Disponibles</p>
@@ -749,20 +697,11 @@ function botonGanador() {
                         </div>
                     </article>
                     <article id="final2">
-                        <svg width="100px" height="100px" viewBox="0 0 24 24" fill="none" stroke="#000000"
-                            stroke-width="0.500" xmlns="http://www.w3.org/2000/svg">
-                            <path
-                                d="M17.3108 11.25C17.3308 11.51 17.2408 11.78 17.0408 11.98L11.0208 18C9.69083 19.33 8.35083 19.33 7.01083 18L3.00083 13.99C2.32083 13.3 1.98083 12.61 2.00083 11.92H2.07083L17.1908 11.26L17.3108 11.25Z"
-                                :fill="colorPagina" />
-                            <path opacity="0.4"
-                                d="M17.04 10.6402L9.69 3.29013L8.82 2.42014C8.53 2.13014 8.05 2.13014 7.76 2.42014C7.47 2.71014 7.47 3.19013 7.76 3.48013L8.63 4.35013L3 9.98013C2.36 10.6201 2.02 11.2701 2 11.9201H2.07L17.19 11.2602L17.31 11.2502C17.3 11.0302 17.2 10.8002 17.04 10.6402Z"
-                                fill="#292D32" />
-                            <path
-                                d="M16 22.75H3C2.59 22.75 2.25 22.41 2.25 22C2.25 21.59 2.59 21.25 3 21.25H16C16.41 21.25 16.75 21.59 16.75 22C16.75 22.41 16.41 22.75 16 22.75Z"
-                                :fill="colorPagina" />
-                            <path
-                                d="M19.35 14.7798C19.09 14.4998 18.61 14.4998 18.35 14.7798C18.04 15.1198 16.5 16.8598 16.5 18.1698C16.5 19.4698 17.55 20.5198 18.85 20.5198C20.15 20.5198 21.2 19.4698 21.2 18.1698C21.2 16.8598 19.66 15.1198 19.35 14.7798Z"
-                                :fill="colorPagina" />
+                        <svg width="100px" height="100px" viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="0.500" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M17.3108 11.25C17.3308 11.51 17.2408 11.78 17.0408 11.98L11.0208 18C9.69083 19.33 8.35083 19.33 7.01083 18L3.00083 13.99C2.32083 13.3 1.98083 12.61 2.00083 11.92H2.07083L17.1908 11.26L17.3108 11.25Z" :fill="colorPagina" />
+                            <path opacity="0.4" d="M17.04 10.6402L9.69 3.29013L8.82 2.42014C8.53 2.13014 8.05 2.13014 7.76 2.42014C7.47 2.71014 7.47 3.19013 7.76 3.48013L8.63 4.35013L3 9.98013C2.36 10.6201 2.02 11.2701 2 11.9201H2.07L17.19 11.2602L17.31 11.2502C17.3 11.0302 17.2 10.8002 17.04 10.6402Z" fill="#292D32" />
+                            <path d="M16 22.75H3C2.59 22.75 2.25 22.41 2.25 22C2.25 21.59 2.59 21.25 3 21.25H16C16.41 21.25 16.75 21.59 16.75 22C16.75 22.41 16.41 22.75 16 22.75Z" :fill="colorPagina" />
+                            <path d="M19.35 14.7798C19.09 14.4998 18.61 14.4998 18.35 14.7798C18.04 15.1198 16.5 16.8598 16.5 18.1698C16.5 19.4698 17.55 20.5198 18.85 20.5198C20.15 20.5198 21.2 19.4698 21.2 18.1698C21.2 16.8598 19.66 15.1198 19.35 14.7798Z" :fill="colorPagina" />
                         </svg>
                         <div>
                             <p>Color De La Pagina</p>
@@ -794,7 +733,7 @@ function botonGanador() {
     align-items: center;
     border: 1px solid red;
     font-weight: 600;
-    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+    font-family: Cambria, Cochin, Georgia, Times, "Times New Roman", serif;
 }
 
 .divGanaste h3 {
@@ -829,7 +768,7 @@ function botonGanador() {
     color: white;
     padding-left: 5px;
     text-align: center;
-    margin-bottom: 10px
+    margin-bottom: 10px;
 }
 
 .divGanador p {
@@ -1067,7 +1006,7 @@ main {
     position: relative;
     bottom: 12.2px;
     font-weight: 400;
-    font-size: 20px
+    font-size: 20px;
 }
 
 #forContenido {
@@ -1129,7 +1068,7 @@ main {
 
 #loteria {
     min-width: min-content;
-    max-width: 120vh;
+    max-width: 100rem;
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
@@ -1137,6 +1076,7 @@ main {
     overflow-y: auto;
     max-height: 60vh;
     margin-top: 2.3%;
+    width: 47rem;
 }
 
 ::-webkit-scrollbar {
@@ -1244,7 +1184,7 @@ main {
     width: 2px;
 }
 
-.cerrar {
+.cerrarrrr {
     margin: 0;
     position: absolute;
     top: -30.5px;
@@ -1354,8 +1294,7 @@ main {
     box-shadow: rgba(17, 17, 26, 0.1) 0px 4px 16px, rgba(17, 17, 26, 0.05) 0px 8px 32px;
     z-index: 999;
     color: black;
-    min-width: 30rem;
-    max-width: 61rem;
+    width: 10rem;
     max-height: 30rem;
     overflow-y: auto;
 }
