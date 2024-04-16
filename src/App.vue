@@ -34,11 +34,13 @@ let premio = ref("");
 let precioBoleta = ref("");
 let tipoLoteria = ref("");
 let fechaSorteo = ref("");
+let actualizarB=ref(false)
 
 // Estados de Boleta
 let boletaReservada = ref(false);
 let boletaDisponible = ref(false);
 let boletaComprada = ref(false);
+let boletaGanada = ref(false);
 
 // Item e Índice del array Boletas de las boletas
 let element = ref(null);
@@ -51,29 +53,20 @@ let direccionCliente = ref("");
 let pagarCliente = ref("");
 
 // Item del cliente
-let participante = ref(null);
+let p = ref(null);
 
 // Lógica de Boleta Ganadora
 const mostrarGanador = ref(false);
-const numeroBoletaGanadora = ref('');
+const boletaGanadora = ref("")
+const estadoGanaste = ref(false);
+const botonDeshabilitado = ref(false);
 
 function formatearNumero(numero) {
     return numero.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
 }
 
-const seleccionarGanador = () => {
-    if (fechaSorteo.value === hoy.toISOString().split('T')[0]) {
-        const boletasCompradas = Object.keys(boletas.value).filter(boletaId => boletas.value[boletaId].estado === 'Comprado');
-        if (boletasCompradas.length > 0) {
-            const boletaGanadora = boletasCompradas[Math.floor(Math.random() * boletasCompradas.length)];
-            boletas.value[boletaGanadora].ganador = true;
-            numeroBoletaGanadora.value = boletaGanadora;
-            mostrarGanador.value = true;
-        }
-    }
-};
 // Funciones Lógicas
-function editar() {
+function editarparticipantes() {
     mostrarFormulario.value = true;
     mostrarBoletas.value = false;
 }
@@ -212,10 +205,12 @@ function color(objeto) {
             return { backgroundColor: "red", color: "white" };
         case "Comprado":
             return { backgroundColor: "blue", color: "white" };
+        case 'Ganador':
+            return { backgroundColor: 'green', color: 'white' };
     }
 }
 const verDatosParticipante = () => {
-    participante.value = clientes.value.find(cliente => cliente.boletas.includes(index));
+    p.value = clientes.value.find(cliente => cliente.boletas.includes(index));
     datosParticipanteVisible.value = true;
     boletaComprada.value = false;
     boletaReservada.value = false;
@@ -240,6 +235,14 @@ const BotonCerrar = () => {
             break;
         case boletaDisponible.value === true:
             boletaDisponible.value = false;
+            break;
+        case boletaGanada.value === true:
+            boletaGanada.value = false;
+        case mostrarGanador.value === true:
+            mostrarGanador.value = false;
+            break;
+        case estadoGanaste.value === true:
+            estadoGanaste.value = false;
             break;
     }
 };
@@ -277,7 +280,7 @@ function liberar() {
         }
 
         // Restablecer el valor del participante
-        participante.value = null;
+        p.value = null;
     }
     // Actualizar el estado de la boleta a 'Disponible'
     boletas.value[index].estado = 'Disponible';
@@ -323,10 +326,106 @@ const pdf = () => {
         body: tableData,
         startY: 20,
     });
-    const totalBoletas = filteredBoletas.length; // Update this line
-    doc.text(Total de boletas compradas: ${totalBoletas}, 10, doc.autoTable.previous.finalY + 10);
+
+    const totalBoletas = filteredBoletas.length;
+    const totalPrecioBoletas = filteredBoletas.filter(boleta => boleta.pagar === 'si').length * precioBoleta.value;
+    const totalPrecioFaltanteBoletasReservadas = filteredBoletas.filter(boleta => boleta.pagar === 'no').length * precioBoleta.value;
+
+    doc.text(`Total de boletas compradas: ${totalBoletas}`, 10, doc.autoTable.previous.finalY + 10);
+    doc.text(`Total del precio de las boletas compradas: ${formatearNumero(totalPrecioBoletas)}`, 10, doc.autoTable.previous.finalY + 20);
+    doc.text(`Total del precio faltante de las boletas reservadas: ${formatearNumero(totalPrecioFaltanteBoletasReservadas)}`, 10, doc.autoTable.previous.finalY + 30);
     doc.save("vendidas.pdf");
 };
+
+function editarparticipante() {
+	actualizarB.value = true;
+	mostrarRegistroDatosDeBoleta.value = true;
+	mostrarFondo.value = true;
+	p = clientes.value.find((c) => c.indice == index);
+    console.log(p, index.value);
+	nombreCliente.value = p.nombre;
+	telefonoCliente.value = p.telefono;
+	direccionCliente.value = p.direccion;
+	pagarCliente.value = p.pagar;
+}
+
+function actualizarpartipante (){
+    if (
+        nombreCliente.value == "" ||
+        telefonoCliente.value == "" ||
+        direccionCliente.value == "" ||
+        pagarCliente.value == ""
+    ) {
+        Swal.fire({
+            text: "Los datos están vacíos",
+            icon: "error",
+        });
+    } else if (isNaN(telefonoCliente.value)) {
+        Swal.fire({
+            text: "Solo números en telefono",
+            icon: "warning",
+        });
+    } else if (pagarCliente.value == "no") {
+        Swal.fire({
+			text: "¡Gracias por reservar una boleta!",
+			icon: "success",
+		});
+
+		clientes.value.find((cliente) => {
+			if (cliente.indice === index) {
+				cliente.nombre = nombreCliente.value;
+				cliente.telefono = telefonoCliente.value;
+				cliente.direccion = direccionCliente.value;
+				cliente.pagar = pagarCliente.value;
+			}
+		});
+
+		boletas.value[index].estado = "Reservado";
+		actualizarB.value = false;
+		mostrarRegistroDatosDeBoleta.value = false;
+		mostrarFondo.value = false;
+		boletaDisponible.value = false;
+
+		editarBalota(element.value, index);
+
+		nombreCliente = ref("");
+		telefonoCliente = ref("");
+		direccionCliente= ref("");
+		pagarCliente = ref("");
+	
+
+    } else if (pagarCliente.value == "si") {
+        Swal.fire({
+			text: "¡La boleta ah sido actualizada!",
+			icon: "success",
+		});
+
+		clientes.value.find((cliente) => {
+			if (cliente.indice === index) {
+				cliente.nombre = nombreCliente.value;
+				cliente.telefono = telefonoCliente.value;
+				cliente.direccion = direccionCliente.value;
+				cliente.pagar = pagarCliente.value;
+			}
+		});
+		
+		boletas.value[index].estado = "Comprado";
+		actualizarB.value = false;
+		mostrarRegistroDatosDeBoleta.value = false;
+		mostrarFondo.value = false;
+		boletaDisponible.value = false;
+
+		editarBalota(element.value, index);
+
+		nombreCliente.value = "";
+        telefonoCliente.value = "";
+        direccionCliente.value = "";
+        pagarCliente.value = "";
+    
+	}
+}
+
+
 function mostrarListadoDeBoletas() {
     mostrarListadoBoletas.value = true;
 }
@@ -342,6 +441,7 @@ function editarBalota(elemento, indice) {
     boletaReservada.value = false;
     boletaDisponible.value = false;
     boletaComprada.value = false;
+    boletaGanada.value = false;
     datosParticipanteVisible.value = false;
     mostrarRegistroDatosDeBoleta.value = false;
     nombreCliente.value = "";
@@ -360,6 +460,8 @@ function editarBalota(elemento, indice) {
         case "Comprado":
             boletaComprada.value = true;
             break;
+        case "Ganador":
+            boletaGanada.value = true
     }
     element = elemento;
     index = indice;
@@ -369,7 +471,7 @@ const agruparBoletasCompradas = () => {
 
     // Agrupar boletas por nombre, teléfono y dirección
     clientes.value.forEach((cliente) => {
-        const clave = ${cliente.nombre}_${cliente.telefono}_${cliente.direccion};
+        const clave = "${cliente.nombre}_${cliente.telefono}_${cliente.direccion}";
         if (!clientesAgrupados[clave]) {
             clientesAgrupados[clave] = { ...cliente, boletas: [cliente.boletas[0]] };
         } else {
@@ -378,14 +480,43 @@ const agruparBoletasCompradas = () => {
     });
 
     return Object.values(clientesAgrupados);
+};
+function estadoGanador() {
+    mostrarGanador.value = true;
 }
+function botonGanador() {
+    mostrarGanador.value = false;
+    estadoGanaste.value = true;
+    botonDeshabilitado.value = true; // Deshabilita el botón después de hacer clic
+
+    // Convierte boletaGanadora a número antes de comparar
+    const boletaGanadoraNumero = parseInt(boletaGanadora.value);
+
+    // Itera sobre todas las boletas
+    boletas.value.forEach((e, index) => {
+        // Comprueba si el número de boleta actual coincide con boletaGanadora
+        if (e.i === boletaGanadoraNumero) {
+            // Establece el estado de la boleta como "Ganador"
+            boletas.value[index].estado = 'Ganador';
+        }
+    });
+}
+
 </script>
 
 <template>
-    <div v-if="mostrarGanador">
-        <h2>Felicidades</h2>
-        <p>La boleta ganadora es: {{ numeroBoletaGanadora }}</p>
-        <p>{{ premio }}</p>
+    <div v-if="mostrarGanador" class="divGanador">
+        <button @click="BotonCerrar" class="cerrarBtn">x</button>
+        <h3>¿Cuál será la boleta ganadora?</h3>
+        La boleta ganadora es:
+        <input type="number" v-model="boletaGanadora">
+        <button class="buttonGanador" @click="botonGanador">Aceptar</button>
+    </div>
+    <div v-if="estadoGanaste" class="divGanaste">
+        <button @click="BotonCerrar" class="cerrarBtn">x</button>
+        <h3>Felicidades</h3>
+        <h3>La boleta {{ boletaGanadora }} es la ganadora del premio de:</h3>
+        <h3>Premio: &nbsp;{{ formatearNumero(premio) }}</h3>
     </div>
     <div id="all" :style="{ backgroundColor: colorFondo }">
         <div id="header" :style="{ backgroundColor: colorPagina }">
@@ -416,17 +547,23 @@ const agruparBoletasCompradas = () => {
             <button @click="volver()" class="cerrarBtnVolver">⮌</button>
             <h3>
                 Boleta
-                <span>{{ participante.indice > 10 ? participante.indice : '0' + participante.indice }}</span>
+                <span>{{ p.indice > 10 ? p.indice : '0' + p.indice }}</span>
             </h3>
             <p>
                 Estado:
-                <span>{{ participante.pagar === 'si' ? 'Comprada 🔵' : 'Reservada 🔴' }}</span>
+                <span>{{ p.pagar === 'si' ? 'Comprada 🔵' : 'Reservada 🔴' }}</span>
             </p>
             <div>
-                <p><strong>Nombre:</strong> {{ participante.nombre }}</p>
-                <p><strong>Teléfono:</strong> {{ participante.telefono }}</p>
-                <p><strong>Dirección:</strong> {{ participante.direccion }}</p>
+                <p><strong>Nombre:</strong> {{ p.nombre }}</p>
+                <p><strong>Teléfono:</strong> {{ p.telefono }}</p>
+                <p><strong>Dirección:</strong> {{ p.direccion }}</p>
             </div>
+
+            <button @click="editarparticipante()">editar datos </button>
+
+            
+
+
         </div>
         <!-- Desplegable boleta comprada -->
         <div id="boletaDesplegableComprada" v-if="boletaComprada == true" :style="{ backgroundColor: boletaComprada }">
@@ -455,6 +592,16 @@ const agruparBoletasCompradas = () => {
             <div>
                 <button @click="formulario()">🤝 Adquirir Boleta</button>
             </div>
+        </div>
+        <!-- Desplegable boleta Ganada -->
+        <div id="boletaDesplegableGanada" v-if="boletaGanada == true">
+            <button @click="BotonCerrar" class="cerrarBtn">x</button>
+            <h3>
+                Boleta
+                <span>{{ element.i > 10 ? element.i : "0" + element.i }}</span>
+            </h3>
+            <p>¡ FELICIDADES ERES EL GANADOR !</p>
+            <p>Estado: <span>Ganador 🟢</span></p>
         </div>
         <main>
             <section id="informacion">
@@ -503,8 +650,8 @@ const agruparBoletasCompradas = () => {
             <section id="accion">
                 <h2 style="color: white">ACCIONES</h2>
                 <div id="accContenido">
-                    <button id="estadoB">ESTADO</button>
-                    <button @click="mostrarListadoDeBoletas">LISTAR BOLETAS</button>
+                    <button :disabled="botonDeshabilitado" @click="estadoGanador" id="estadoB">ESTADO GANADOR</button>
+                    <button @click="mostrarListadoDeBoletas()">LISTAR BOLETAS</button>
                     <button @click="mostrarPerzonalizar()">PERSONALIZAR
                         TALONARIO WEB</button>
                     <button @click="pdf()">GENERAR ARCHIVO DE
@@ -514,7 +661,7 @@ const agruparBoletasCompradas = () => {
             <section v-if="mostrarListadoBoletas" class="listado-boletas">
                 <h2>&nbsp;&nbsp;&nbsp;&nbsp;LISTADO DE BOLETAS</h2>
                 <div class="papaCard">
-                    <div class="card" v-for="(cliente, index) in agruparBoletasCompradas()" :key="cliente.telefono">
+                    <div class="card" v-for="(cliente, index) in agruparBoletasCompradas()" :key="index">
                         <p>Nombre</p>
                         <p class="textoListar">{{ cliente.nombre }}</p>
                         <p>Telefono</p>
@@ -549,7 +696,8 @@ const agruparBoletasCompradas = () => {
                         No
                     </label>
                 </div>
-                <button class="adquirir" @click="adquirir()">ADQUIRIR</button>
+                <button class="adquirir" @click="adquirir()" v-if="actualizarB==false">ADQUIRIR</button>
+                <button class="adquirir" @click="actualizarpartipante()" v-else>actualizar</button>
             </section>
 
             <div id="paletasDeColores" v-if="mostrarPerzonalicacion == true">
@@ -628,6 +776,67 @@ const agruparBoletasCompradas = () => {
 </template>
 
 <style scoped>
+.divGanaste {
+    z-index: 99;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    gap: 10px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    padding-inline: 20px;
+    background-color: white;
+    color: black;
+    align-items: center;
+    border: 1px solid red;
+    font-weight: 600;
+    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+}
+
+.divGanaste h3 {
+    margin: 0;
+}
+
+.buttonGanador {
+    background-color: red;
+    color: white;
+}
+
+.divGanador {
+    z-index: 99;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    padding-inline: 40px;
+    background-color: white;
+    color: black;
+    align-items: center;
+    border: 1px solid red;
+    padding-bottom: 15px;
+}
+
+.divGanador input {
+    background-color: #333;
+    width: 25px;
+    color: white;
+    padding-left: 5px;
+    text-align: center;
+    margin-bottom: 10px
+}
+
+.divGanador p {
+    color: red;
+    font-weight: 600;
+}
+
 #all {
     width: 100%;
     position: absolute;
@@ -703,10 +912,16 @@ main {
     /* Agregar barra de desplazamiento vertical si el contenido es demasiado largo */
 }
 
+#infoContenido p {
+    display: flex;
+    flex-direction: row;
+}
+
 #infoContenido span {
     color: #333;
     /* Cambia este color al que desees */
     padding-left: 3px;
+    padding-right: 20px;
 }
 
 #informacion button {
@@ -1107,6 +1322,27 @@ main {
     background-color: #fff;
     color: #000;
     text-align: left;
+}
+
+#boletaDesplegableGanada {
+    display: flex;
+    flex-direction: column;
+    background-color: #fff;
+    color: black;
+    width: 18rem;
+    position: fixed;
+    bottom: 0;
+    left: 50%;
+    transform: translate(-50%);
+    z-index: 999;
+}
+
+#boletaDesplegableGanada h3 {
+    margin: 9px 0 15px 0;
+}
+
+#boletaDesplegableGanada p {
+    margin: 0px 0 9px 0;
 }
 
 .listado-boletas {
